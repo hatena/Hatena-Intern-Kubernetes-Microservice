@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -eux
+
+script_dir=$(dirname "$0")
+base_dir="$script_dir/.."
+cd "$base_dir"
+
+docker build protoc-go -t hatena-intern-2021-protoc-go
+docker build protoc-ts -t hatena-intern-2021-protoc-ts
+
+mkdir -p go/account ts/account
+docker run -v "$(pwd):/pb" -w /pb --rm hatena-intern-2021-protoc-go \
+  protoc \
+    --go_out=go/account \
+    --go_opt=paths=source_relative \
+    --go-grpc_out=go/account \
+    --go-grpc_opt=paths=source_relative \
+    account.proto
+docker run -v "$(pwd):/pb" -w /pb --rm hatena-intern-2021-protoc-ts \
+  grpc_tools_node_protoc \
+    --plugin=protoc-gen-ts=/usr/local/share/.config/yarn/global/node_modules/grpc_tools_node_protoc_ts/bin/protoc-gen-ts \
+    --js_out=import_style=commonjs,binary:ts/account \
+    --grpc_out=grpc_js:ts/account \
+    --ts_out=grpc_js:ts/account \
+    account.proto
+mkdir -p ../services/account/pb ../services/blog/pb
+cp -r ./go/account ../services/account/pb
+cp -r ./go/account ../services/blog/pb
+
+mkdir -p go/renderer ts/renderer
+docker run -v "$(pwd):/pb" -w /pb --rm hatena-intern-2021-protoc-go \
+  protoc \
+    --go_out=go/renderer \
+    --go_opt=paths=source_relative \
+    --go-grpc_out=go/renderer \
+    --go-grpc_opt=paths=source_relative \
+    renderer.proto
+docker run -v "$(pwd):/pb" -w /pb --rm hatena-intern-2021-protoc-ts \
+  grpc_tools_node_protoc \
+    --plugin=protoc-gen-ts=/usr/local/share/.config/yarn/global/node_modules/grpc_tools_node_protoc_ts/bin/protoc-gen-ts \
+    --js_out=import_style=commonjs,binary:ts/renderer \
+    --grpc_out=grpc_js:ts/renderer \
+    --ts_out=grpc_js:ts/renderer \
+    renderer.proto
+
+mkdir -p ../services/renderer-go/pb ../services/renderer-ts/pb ../services/blog/pb
+cp -r ./go/renderer ../services/renderer-go/pb
+cp -r ./ts/renderer ../services/renderer-ts/pb
+cp -r ./go/renderer ../services/blog/pb
+
+mkdir -p ts/health-check
+docker run -v "$(pwd):/pb" -w /pb --rm hatena-intern-2021-protoc-ts \
+  grpc_tools_node_protoc \
+    --plugin=protoc-gen-ts=/usr/local/share/.config/yarn/global/node_modules/grpc_tools_node_protoc_ts/bin/protoc-gen-ts \
+    --js_out=import_style=commonjs,binary:ts/health-check \
+    --grpc_out=grpc_js:ts/health-check \
+    --ts_out=grpc_js:ts/health-check \
+    health-check.proto
+
+# health-check は grpc-js-health-probe の型定義の参考にするだけで直接は使わないのでコピーしていない
+# mkdir -p ../services/renderer-ts/pb
+# cp -r ./ts/health-check ../services/renderer-ts/pb

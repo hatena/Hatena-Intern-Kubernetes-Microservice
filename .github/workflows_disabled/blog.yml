@@ -1,0 +1,51 @@
+name: Test blog
+
+on:
+  push:
+    paths:
+      - .github/workflows/blog.yml
+      - services/blog/**
+      - k8s/blog/config/schema.sql
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 1
+          TZ: UTC
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.16
+      id: go
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - uses: golangci/golangci-lint-action@v2
+      with:
+        working-directory: services/blog
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+      working-directory: services/blog
+    - name: Build
+      run: go build -v .
+      working-directory: services/blog
+    - name: Setup MySQL db for blog
+      # ref: k8s/blog/db.yaml
+      run: |
+        mysqladmin -uroot --host=127.0.0.1 --port=3306 create intern_2021_blog_test
+        mysql -uroot --host=127.0.0.1 --port=3306 intern_2021_blog_test < ./config/schema.sql
+      working-directory: k8s/blog
+    - name: Test
+      run: go test -v ./...
+      working-directory: services/blog
+      env:
+        TEST_DATABASE_DSN: root@(localhost:3306)/intern_2021_blog_test?time_zone=UTC&parseTime=true&loc=UTC
