@@ -1,0 +1,11 @@
+linters:
+  enable:
+  - gofmt
+
+run:
+  skip-files:
+    - ".+_gen.go"
+
+linters-settings:
+  gofmt:
+    simplify: true

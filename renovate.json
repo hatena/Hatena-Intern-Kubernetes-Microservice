@@ -1,0 +1,16 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabled": true,
+  "extends": [
+    "local>hatena/renovate-config"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^\\.github/workflows/*\\.ya?ml"],
+      "matchStrings": ["with:\\s+node-version: (?<currentValue>.*)"],
+      "depNameTemplate": "node",
+      "datasourceTemplate": "node",
+      "versioningTemplate": "node"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/hatena/Hatena-Intern-2022/pb/go/fetcher"; // fake
+package fetcher;
+
+service Fetcher {
+  rpc FetchPageTitle(FetchPageTitleRequest) returns (FetchPageTitleReply);
+}
+
+// fetcher
+
+message FetchPageTitleRequest {
+  // TODO: url を引数に取る Request
+}
+
+message FetchPageTitleReply {
+  // TODO: ページタイトルを返却するような Reply
+}

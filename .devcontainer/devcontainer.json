@@ -1,0 +1,54 @@
+{
+  "name": "Kubernetes - Minikube-in-Docker",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["--privileged"],
+  "mounts": [
+    "source=minikube-var-lib-docker,target=/var/lib/docker,type=volume",
+    "source=minikube-config,target=/home/vscode/.minikube,type=volume"
+  ],
+  "overrideCommand": false,
+  "postCreateCommand": "sh .devcontainer/post-create.sh",
+  "postStartCommand": "sh .devcontainer/post-start.sh",
+  "postAttachCommand": "sh .devcontainer/post-attach.sh",
+  "forwardPorts": [8080, 50051, 50052],
+  "portsAttributes": {
+    "8080": {
+      "label": "blog",
+      "onAutoForward": "openBrowser"
+    },
+    "50051": {
+      "label": "account-grpc",
+      "onAutoForward": "notify"
+    },
+    "50052": {
+      "label": "renderer-go-grpc",
+      "onAutoForward": "notify"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-vsliveshare.vsliveshare-pack"
+      ]
+    }
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb",
+    "storage": "64gb"
+  },
+  "remoteUser": "vscode",
+  "features": {
+    "sshd": "latest",
+    "golang": "latest",
+    "node": {
+      "version": "lts",
+      "nodeGypDependencies": true
+    }
+  }
+}
