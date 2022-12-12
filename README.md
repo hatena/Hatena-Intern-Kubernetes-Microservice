@@ -1,9 +1,9 @@
-# [Hatena REMOTE INTERNSHIP 2022](https://hatenacorp.jp/recruit/intern/2022)
+# [Hatena REMOTE INTERNSHIP 2022](https://hatena.co.jp/recruit/intern/2022)
 
 「Hatena REMOTE INTERNSHIP 2022」では、Kubernetes上に構築されたブログシステムを題材としました。ブログシステムはマイクロサービスを意識しており、メインであるブログサービスに加えて、アカウントサービスや、Markdownなどの記法を変換するサービスが用意されています。それぞれのサービス間はgRPCを使ってやりとりしています。
 
 <!--
-インターンシップのカリキュラムについては、[講義動画](https://hatenacorp.jp/intern2020/public_broadcast)や[課題](/docs/exercise.md)を公開しているので、参照してください。
+インターンシップのカリキュラムについては、[講義動画](https://hatena.co.jp/intern2020/public_broadcast)や[課題](/docs/exercise.md)を公開しているので、参照してください。
 -->
 
 また、2021年に開催された [Hatena REMOTE INTERNSHIP 2021](https://hatena.co.jp/recruit/intern/2021) の題材としたブログシステムはこのリポジトリの2021ブランチから参照することができます。
