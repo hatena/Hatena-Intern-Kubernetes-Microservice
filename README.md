@@ -5,6 +5,9 @@
 <!--
 インターンシップのカリキュラムについては、[講義動画](https://hatenacorp.jp/intern2020/public_broadcast)や[課題](/docs/exercise.md)を公開しているので、参照してください。
 -->
+
+また、2021年に開催された [Hatena REMOTE INTERNSHIP 2021](https://hatena.co.jp/recruit/intern/2021) の題材としたブログシステムはこのリポジトリの2021ブランチから参照することができます。
+
 ## ローカル環境でセットアップ
 アプリケーションの起動には以下が必要です.
 
