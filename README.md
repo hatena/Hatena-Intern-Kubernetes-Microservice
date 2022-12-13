@@ -6,7 +6,7 @@
 インターンシップのカリキュラムについては、[レポートサイト](https://hatena.co.jp/recruit/intern/2022)や[課題](/docs/exercise.md)を公開しているので、参照してください。
 -->
 
-また、2021年に開催された [Hatena REMOTE INTERNSHIP 2021](https://hatena.co.jp/recruit/intern/2021) の題材としたブログシステムはこのリポジトリの2021ブランチから参照することができます。
+また、2021年に開催された [Hatena REMOTE INTERNSHIP 2021](https://hatena.co.jp/recruit/intern/2021) の題材としたブログシステムは[このリポジトリの2021ブランチ](https://github.com/hatena/Hatena-Intern-Kubernetes-Microservice/tree/2021)から参照することができます。
 
 ## ローカル環境でセットアップ
 アプリケーションの起動には以下が必要です.
