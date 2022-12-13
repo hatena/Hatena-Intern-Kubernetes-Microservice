@@ -1,73 +1,12 @@
-# [Hatena REMOTE INTERNSHIP 2022](https://hatenacorp.jp/recruit/intern/2022)
+# [Hatena REMOTE INTERNSHIP 2022](https://hatena.co.jp/recruit/intern/2022)
 
 「Hatena REMOTE INTERNSHIP 2022」では、Kubernetes上に構築されたブログシステムを題材としました。ブログシステムはマイクロサービスを意識しており、メインであるブログサービスに加えて、アカウントサービスや、Markdownなどの記法を変換するサービスが用意されています。それぞれのサービス間はgRPCを使ってやりとりしています。
 
 <!--
-インターンシップのカリキュラムについては、[講義動画](https://hatenacorp.jp/intern2020/public_broadcast)や[課題](/docs/exercise.md)を公開しているので、参照してください。
+インターンシップのカリキュラムについては、[レポートサイト](https://hatena.co.jp/recruit/intern/2022)や[課題](/docs/exercise.md)を公開しているので、参照してください。
 -->
 
-## Codespacesでセットアップ（インターン期間中はこちらを選択してください）
-GitHub Codespacesを使って開発することが可能です．以下の手順でアプリケーションを起動してください．なお、MinikubeはCodespaces起動時に自動で起動するようになっているため、Minikubeの手順は参考情報です。
-
-### Minikube起動（Codespaces起動時に自動で起動されます）
-
-<details>
-
-``` shell
-# Minikube を起動
-
-minikube start --kubernetes-version=v1.24.3 --driver=docker --memory='8g' --cpus=4
-```
-
-</details>
-
-### contextの設定（Codespaces接続時に自動で設定されます）
-
-<details>
-
-```
-kubectl config set-context hatena-intern-2022 --cluster=minikube --user=minikube --namespace=hatena-intern-2022
-kubectl config use-context hatena-intern-2022
-```
-</details>
-
-### アプリケーションの起動
-```
-make up
-```
-しばらく待つとアプリケーションが起動したログが出力されます
-```
-[blog] 2022-08-18T05:31:25.130Z INFO    blog/main.go:81 starting web server (port = 8080)
-[renderer-go] 2022-08-18T05:29:04.420Z  INFO    renderer-go/main.go:50  starting gRPC server (port = 50051)
-[account] 2022-08-18T05:30:42.721Z      INFO    account/main.go:64      starting gRPC server (port = 50051)
-```
-podが全て立ち上がっているかは以下のコマンドでも確認できます
-
-```
-kubectl get pods
-```
-
-```
-NAME                            READY   STATUS    RESTARTS      AGE
-account-59d777f778-5dgsj        1/1     Running   0             16m
-account-db-86d4996fbf-nrf7m     1/1     Running   1 (14m ago)   16m
-account-test-7b4b5b8c76-xsnww   1/1     Running   0             16m
-blog-847564dc7-gkphp            1/1     Running   0             16m
-blog-db-7dcfb8b56f-wpmmm        1/1     Running   0             16m
-blog-test-7bdd4786c7-6bxj4      1/1     Running   0             16m
-renderer-go-78d9f5cd8d-qx25p    1/1     Running   0             16m
-```
-
-### アプリケーションの確認
-`make up`したターミナルと別のターミナルで、以下のコマンドを実行します。
-
-```
-kubectl port-forward service/blog 8080:8080
-```
-
-これにより8080番がフォワードされます．開いているターミナルの`port`タブの8080番ポートのローカルアドレスに表示されているアドレスにブラウザからアクセスします．
-
-![](docs/images/port.png)
+また、2021年に開催された [Hatena REMOTE INTERNSHIP 2021](https://hatena.co.jp/recruit/intern/2021) の題材としたブログシステムは[このリポジトリの2021ブランチ](https://github.com/hatena/Hatena-Intern-Kubernetes-Microservice/tree/2021)から参照することができます。
 
 ## ローカル環境でセットアップ
 アプリケーションの起動には以下が必要です.
@@ -183,6 +122,75 @@ make up
 ``` shell
 minikube -n hatena-intern-2022 service blog
 ```
+
+## Codespacesでセットアップ（インターン期間中はこちらを選択してください）
+
+<details>
+<summary>2022年のリモートインターンシップでは Codespaces による開発環境構築を利用しました</summary>
+
+GitHub Codespacesを使って開発することが可能です．以下の手順でアプリケーションを起動してください．なお、MinikubeはCodespaces起動時に自動で起動するようになっているため、Minikubeの手順は参考情報です。
+
+### Minikube起動（Codespaces起動時に自動で起動されます）
+
+<details>
+
+``` shell
+# Minikube を起動
+
+minikube start --kubernetes-version=v1.24.3 --driver=docker --memory='8g' --cpus=4
+```
+
+</details>
+
+### contextの設定（Codespaces接続時に自動で設定されます）
+
+<details>
+
+```
+kubectl config set-context hatena-intern-2022 --cluster=minikube --user=minikube --namespace=hatena-intern-2022
+kubectl config use-context hatena-intern-2022
+```
+</details>
+
+### アプリケーションの起動
+```
+make up
+```
+しばらく待つとアプリケーションが起動したログが出力されます
+```
+[blog] 2022-08-18T05:31:25.130Z INFO    blog/main.go:81 starting web server (port = 8080)
+[renderer-go] 2022-08-18T05:29:04.420Z  INFO    renderer-go/main.go:50  starting gRPC server (port = 50051)
+[account] 2022-08-18T05:30:42.721Z      INFO    account/main.go:64      starting gRPC server (port = 50051)
+```
+podが全て立ち上がっているかは以下のコマンドでも確認できます
+
+```
+kubectl get pods
+```
+
+```
+NAME                            READY   STATUS    RESTARTS      AGE
+account-59d777f778-5dgsj        1/1     Running   0             16m
+account-db-86d4996fbf-nrf7m     1/1     Running   1 (14m ago)   16m
+account-test-7b4b5b8c76-xsnww   1/1     Running   0             16m
+blog-847564dc7-gkphp            1/1     Running   0             16m
+blog-db-7dcfb8b56f-wpmmm        1/1     Running   0             16m
+blog-test-7bdd4786c7-6bxj4      1/1     Running   0             16m
+renderer-go-78d9f5cd8d-qx25p    1/1     Running   0             16m
+```
+
+### アプリケーションの確認
+`make up`したターミナルと別のターミナルで、以下のコマンドを実行します。
+
+```
+kubectl port-forward service/blog 8080:8080
+```
+
+これにより8080番がフォワードされます．開いているターミナルの`port`タブの8080番ポートのローカルアドレスに表示されているアドレスにブラウザからアクセスします．
+
+![](docs/images/port.png)
+
+</details>
 
 ## サービス
 アプリケーションには以下の 3 つのサービスが存在します.
